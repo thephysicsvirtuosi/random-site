@@ -2,6 +2,7 @@ from bottle import route, run, template, request
 
 import sqlite3
 
+@route('/')
 @route('/test')
 def test_page():
 	return template('test-template')
@@ -14,6 +15,8 @@ def see_all():
 	c = conn.cursor()
 	c.execute("SELECT id, digits, author, timestamp from randdat")
 	result = c.fetchall()
+
+	return template('database-template',result=result)
 	return str(result)
 
 @route('/datum', method='POST')
