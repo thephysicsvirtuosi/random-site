@@ -48,5 +48,4 @@ def test_mean(guys):
     """ Look at the mean of the stream, and look at its z-score """
     mu = sp.mean(to_ints(guys))
     
-    musig = 
     
