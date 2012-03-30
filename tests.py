@@ -5,6 +5,7 @@ from collections import defaultdict
 
 import scipy as sp
 import pylab as py
+import scipy.stats as stats
 
 import bz2
 
@@ -29,6 +30,9 @@ def count_digs(guys):
     for item in foo:
         counts[item] += 1
     return [ counts[i] for i in range(10)] 
+
+def renorm(real, exp, scale):
+    return 2*sp.arctan(scale/(abs(real-exp)+1e-10))/sp.pi
 
 ########################################
 ## THE TESTS
@@ -67,3 +71,23 @@ def test_serial1(guys):
     back = arr[:-1]
 
     return 1-abs((1./n * sp.sum( (front-mu)*(back-mu) ))/(v+1e-10))
+
+def test_mean(guys):
+    good = 9./2
+    sample = sp.mean(sp.array(list(to_ints(guys))))
+    return renorm(good, sample, 0.5)
+
+def test_std(guys):
+    good = (10**2-1.0)/12.0
+    sample = sp.std(sp.array(list(to_ints(guys))))**2
+    return renorm(good, sample, 1)
+
+def test_skew(guys):
+    good = 0.0
+    sample = stats.skew(sp.array(list(to_ints(guys))))
+    return renorm(good, sample, 1e-1)
+
+def test_kurtosis(guys):
+    good = -6.0/5.0 * (10**2+1.0)/(10**2-1.0)
+    sample = stats.kurtosis(sp.array(list(to_ints(guys))))
+    return renorm(good, sample, 0.7)
