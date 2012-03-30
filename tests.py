@@ -12,7 +12,7 @@ piseq = "14159265358979323846264338327950288419716939937510582097494459230781640
 
 zeros = "0"*100
 
-count = "0123456789"*10
+cheat = "0123456789"*10
 
 rand1 = randint(0,10,100)
 rand2 = randint(0,10,100)
@@ -45,4 +45,23 @@ def test_bz2(guys):
     return (c_length-short)/float(tot-short)
 
     
-    
+def test_shannon(guys):
+    tot = float(len(guys))
+    counts = count_digs(guys)
+
+    entropy = sum( -count/tot*sp.log2(count/tot + 10**(-10)) for count in counts )
+
+    return entropy/sp.log2(10)
+
+
+if __name__ == "__main__":    
+    from inspect import getmembers
+    currentdir = dir()
+    alltests = [guy for name,guy in getmembers(__file__) if name.startswith('test_') ]
+
+    print getmembers(self)
+    for test in alltests:
+        print "test: ", test.__name__, " on piseq gives\t ", test(piseq)
+        print "\t..\t on zeros gives\t ", test(zeros)
+        print "\t..\t on cheat gives\t ", test(cheat)
+        print "\t..\t on rand gives\t", test(rand1)
