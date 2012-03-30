@@ -44,8 +44,5 @@ def test_bz2(guys):
     
     return (c_length-short)/float(tot-short)
 
-def test_mean(guys):
-    """ Look at the mean of the stream, and look at its z-score """
-    mu = sp.mean(to_ints(guys))
     
     
